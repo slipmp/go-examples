@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"sort"
-	"strconv"
 )
 
 func main() {
@@ -12,31 +11,32 @@ func main() {
 }
 
 func threeSum(nums []int) [][]int {
+	sort.Ints(nums)
 	result := make([][]int, 0)
-	resultMap := make(map[string]struct{})
 	totalNums := len(nums)
 
-	// var wg sync.WaitGroup
-	// wg.Add(1)
-	// defer wg.Done()
-
-	//messages := make(chan string)
-
-	for i := 0; i < totalNums; i++ {
-		for j := 1; j < totalNums && i != 1; j++ {
-			for k := 2; k < totalNums && j != 2; k++ {
-				isDifferentIndices := i != j && i != k && j != k
-				isSumZero := nums[i]+nums[j]+nums[k] == 0
-				if isDifferentIndices && isSumZero {
-					sortedSlice := []int{nums[i], nums[j], nums[k]}
-					sort.Ints(sortedSlice)
-					strRep := strconv.Itoa(sortedSlice[0]) + "," + strconv.Itoa(sortedSlice[1]) + "," + strconv.Itoa(sortedSlice[2])
-
-					if _, ok := resultMap[strRep]; !ok {
-						result = append(result, sortedSlice)
-						resultMap[strRep] = struct{}{}
-					}
+	for i := 0; i < totalNums-2; i++ {
+		if i > 0 && nums[i] == nums[i-1] {
+			continue // skip duplicate elements
+		}
+		target := -nums[i]
+		j, k := i+1, totalNums-1
+		for j < k {
+			sum := nums[j] + nums[k]
+			if sum == target {
+				result = append(result, []int{nums[i], nums[j], nums[k]})
+				j++
+				k--
+				for j < k && nums[j] == nums[j-1] {
+					j++ // skip duplicate elements
 				}
+				for j < k && nums[k] == nums[k+1] {
+					k-- // skip duplicate elements
+				}
+			} else if sum < target {
+				j++
+			} else {
+				k--
 			}
 		}
 	}
