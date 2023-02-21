@@ -1,4 +1,4 @@
-package main
+package three
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	input := threeSum([]int{-1, 0, 1, 2, -1, -4})
+	input := threeSum([]int{-70, -10, -10, 1, 2, -1, 20})
 	fmt.Println(input)
 }
 
